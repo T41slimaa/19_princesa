@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#160e16" />
+    <title>Feliz aniversário amor!! ♡</title>
+    <script type="importmap">
+      { "imports": { "three": "./vendor/three.module.min.js" } }
+    </script>
+    <style>
+      :root {
+        font-family: Georgia, "Times New Roman", serif;
+        color: #f8e9e5;
+        background: #160e16;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      #scene {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 90% 85% at 50% 40%,
+          #43242e 0%,
+          #25151f 48%,
+          #110b12 100%
+        );
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+      }
+      .grain {
+        position: fixed;
+        inset: 0;
+        opacity: 0.11;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+      }
+      .vignette {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        box-shadow: inset 0 0 150px #08040a70;
+      }
+      .header {
+        position: absolute;
+        top: clamp(34px, 8vh, 86px);
+        left: 0;
+        right: 0;
+        text-align: center;
+        pointer-events: none;
+        padding: 0 18px;
+      }
+      .eyebrow {
+        font:
+          600 10px/1.5 system-ui,
+          sans-serif;
+        letter-spacing: 0.33em;
+        text-transform: uppercase;
+        color: #e9a6b7;
+      }
+      .header h1 {
+        font-size: clamp(27px, 4.5vw, 52px);
+        font-weight: 400;
+        letter-spacing: -0.025em;
+        margin: 13px 0 0;
+        text-shadow: 0 4px 18px #13040b99;
+      }
+      .header p {
+        color: #e0b9bb;
+        font-size: clamp(13px, 2vw, 17px);
+        margin: 12px 0 0;
+      }
+      .bottom {
+        position: absolute;
+        bottom: clamp(22px, 5vh, 60px);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+      }
+      .cta {
+        font:
+          600 12px system-ui,
+          sans-serif;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+        border: 1px solid #e9c9bd70;
+        border-radius: 100px;
+        background: #f4e0d2;
+        color: #3e1e2c;
+        padding: 17px 29px;
+        cursor: pointer;
+        box-shadow: 0 10px 38px #0005;
+        transition:
+          transform 0.22s,
+          box-shadow 0.22s;
+      }
+      .cta:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 16px 42px #0008;
+      }
+      .cta:focus-visible {
+        outline: 3px solid #e7a1b0;
+        outline-offset: 4px;
+      }
+      .hint {
+        color: #cda6aa;
+        font:
+          11px system-ui,
+          sans-serif;
+        letter-spacing: 0.06em;
+        text-align: center;
+        max-width: 340px;
+      }
+      .hint strong {
+        color: #f5d3d8;
+      }
+      .letter-layer {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        pointer-events: none;
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+          opacity 0.7s,
+          transform 0.7s;
+        z-index: 8;
+        overflow-y: auto;
+      }
+      .letter-layer.visible {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+      .paper {
+        width: min(94vw, 480px);
+        margin: auto;
+        padding: clamp(26px, 6vw, 54px);
+        background: linear-gradient(135deg, #fff9eb, #f3e6d0);
+        color: #603f43;
+        box-shadow:
+          0 22px 80px #0009,
+          0 0 0 1px #ac927890;
+        border-radius: 4px;
+        text-align: center;
+        position: relative;
+      }
+      .paper:before {
+        content: "";
+        position: absolute;
+        inset: 12px;
+        border: 1px solid #c6a99860;
+        pointer-events: none;
+      }
+      .paper .small {
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        font:
+          10px system-ui,
+          sans-serif;
+        color: #ae737c;
+      }
+      .paper h2 {
+        font-size: clamp(28px, 6vw, 40px);
+        font-weight: 400;
+        margin: 17px 0 20px;
+      }
+      .paper p {
+        font-size: clamp(16px, 2.6vw, 19px);
+        line-height: 1.8;
+      }
+      .heart {
+        font-size: 26px;
+        color: #b95369;
+      }
+      .close {
+        font:
+          600 11px system-ui,
+          sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.13em;
+        border: 0;
+        cursor: pointer;
+        background: transparent;
+        color: #8c5b61;
+        padding: 14px;
+      }
+      .loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #e8c7c9;
+        font: 13px system-ui;
+        text-align: center;
+      }
+      .error {
+        display: none;
+        position: fixed;
+        inset: auto 15px 95px;
+        padding: 16px;
+        background: #4e2631;
+        color: #fff;
+        font: 13px system-ui;
+        border-radius: 8px;
+        z-index: 20;
+      }
+      @media (max-width: 600px) {
+        .header {
+          top: 8vh;
+        }
+        .bottom {
+          bottom: 8vh;
+        }
+        .cta {
+          padding: 15px 22px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .letter-layer,
+        .cta {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="scene">
+      <div class="loading" id="loading">Waitt muahahah...</div>
+    </div>
+    <div class="grain"></div>
+    <div class="vignette"></div>
+    <header class="header">
+      <div class="eyebrow">For you mor :)</div>
+      <h1 id="headline">Uma cartinha UwU muahahah</h1>
+      <p id="subtitle">
+        Espero que tu tenha reparado na LINDISSIMA homenagem ao cachecol da
+        praxe.
+      </p>
+    </header>
+    <div class="bottom">
+      <button id="action" class="cta" type="button">
+        Clica AQUI para revelar a carta
+      </button>
+      <div class="hint" id="hint">
+        Move com o rato (ou com o dedo no teu pc chique p ver mais do tecido)<br />
+      </div>
+    </div>
+    <div class="letter-layer" id="letter">
+      <article class="paper">
+        <div class="small">Uma cartinha pra ti mor</div>
+        <h2>Feliz aniversário, meu amor ♡</h2>
+        <p>
+          Hoje queria para além de coisas físicas dar algo que tu possa sempre
+          ver de onde e como quiser. como já é tradição nossa, aqui vai o site
+          desse ano mor.
+        </p>
+        <p>
+          Escolhi fazer assim, com uma homenagem de um momento que eu sei que
+          está a ser muito importante pra você, e que honra te ver crescer e te
+          ver feliz, com novos amigos e com novas coisas para fazer! Que todas
+          as dificuldades se tornem minúsculas diante das alegrias que a praxe
+          pode te proporcionar. Que tu veja nos teus amigos a amizade e a
+          parceria que tu sempre esteve à procura.
+        </p>
+        <p>
+          Aos teus 19 meu bem, tu que é a pessoa que mais me faz feliz nesse
+          mundo, e que eu quero passar o resto da vida ao lado. Sempre acho que
+          faço pouco pra mostrar o quanto o que eu demonstro é pouco perto da
+          dimensão do que eu sinto por você. Só não te dei a lua (real) ainda
+          porque eu não consegui trazer na mochila, mas quando esse diai chegar
+          ela vai ser tua.
+        </p>
+        <p>
+          Se tu parar pra pensar, a cada aniversário nosso que passa, estamos
+          mais perto de ter a dreamhouse, e que sonho e que prazer pensar que eu
+          tenho essa sorte, de dividir o meu futuro contigo e ter a certeza de
+          que tu estará lá ao meu lado, de que vamos poder ter as nossas coisas
+          e a nossa paz, que alegria em pensar que, a pessoa com quem eu quero
+          dividir a minha vida é a melhor pessoa que eu já conheci.
+        </p>
+        <p>
+          eu nunca sequer teria corgitado ser freira se eu soubesse a sorte que
+          me aguardava, e depois que eu te tive na minha vida, eu me sinto
+          verdadeiramente completa, de uma forma que nenhum desejo e plano de
+          vida meu seria capaz de fazer.
+        </p>
+        <div class="heart">♥</div>
+        <p style="font-style: italic; font-size: 15px">
+          Com todo o meu amor, maldade pura.
+        </p>
+        <p style="font-style: italic; font-size: 15px">
+          PS: dá pra dar zoom no cachecol
+        </p>
+        <button class="close" id="close">↶ Voltar ao presente</button>
+      </article>
+    </div>
+    <div class="error" id="error">
+      Não foi possível carregar o motor 3D. Experimenta recarregar a página ou
+      abrir noutro navegador.
+    </div>
+    <script>
+      addEventListener(
+        "error",
+        () => {
+          document.getElementById("error").style.display = "block";
+        },
+        true,
+      );
+    </script>
+    <script type="module" src="./js/cena.js"></script>
+  </body>
+</html>
